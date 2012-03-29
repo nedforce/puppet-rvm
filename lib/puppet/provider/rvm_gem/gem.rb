@@ -70,10 +70,14 @@ Puppet::Type.type(:rvm_gem).provide(:gem) do
 
   def install(useversion = true)
     command = gembinary + ['install']
-    command << "-v" << resource[:ensure] if (! resource[:ensure].is_a? Symbol) and useversion
+    if (! resource[:ensure].is_a? Symbol) and useversion
+      command << "-v" << resource[:ensure] 
+      # Don't reinstall or update if already installed
+      command << "--conservative"
+    end
     # Always include dependencies
     command << "--include-dependencies"
-
+    
     if source = resource[:source]
       begin
         uri = URI.parse(source)
