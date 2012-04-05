@@ -35,7 +35,8 @@ Puppet::Type.type(:rvm_gemset).provide(:gemset) do
   end
 
   def create
-    command = gemsetcommand + ['create', gemset_name]
+    #command = gemsetcommand + ['create', gemset_name]
+    command = [command(:rvmcmd), "use", "--create", "#{ruby_version}@#{gemset_name}" ]
     execute(command)
   end
 
@@ -45,6 +46,7 @@ Puppet::Type.type(:rvm_gemset).provide(:gemset) do
   end
 
   def exists?
-    gemset_list.include? gemset_name
+    #gemset_list.include? gemset_name
+    File.exists?("/usr/local/rvm/environments/#{ruby_version}@#{gemset_name}")
   end
 end
