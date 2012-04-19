@@ -9,7 +9,7 @@ Puppet::Type.type(:rvm_system_ruby).provide(:rvm) do
   end
 
   def destroy
-    rvmcmd "uninstall", resource[:name]
+    rvmcmd "remove", resource[:name], '--gems'
   end
 
   def exists?
